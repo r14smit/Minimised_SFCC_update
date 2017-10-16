@@ -15,6 +15,7 @@ $zip = zip_open($file);
 $stockZip = zip_open($stock);
 $selections = '';
 $options = '';
+$navigation ='';
 $stockOptions='';
 $priceOptions='';
 
@@ -29,6 +30,8 @@ if (!$_POST){
            $zname=zip_entry_name($zip_entry);
            if(strpos($zdir,'catalogs/')>1 && strpos($zdir,'MASTER' )>1 && strpos($zdir,$_POST['catalog'] )>1){
                 $options = $zname;
+           }elseif(strpos($zdir,'catalogs/')>1 && strpos($zdir,$_POST['catalog'] )>1){
+                $navigation = $zname;
            }
        } 
     zip_close($zip);
@@ -54,6 +57,7 @@ if (!$_POST){
     if ($res === TRUE) {
         //chmod("unzip\\", 0644); 
         $zipCat->extractTo('unzipped/',$options);
+        $zipCat->extractTo('unzipped/',$navigation);
         $zipCat->close();
     }
     
@@ -86,9 +90,11 @@ if (!$_POST){
             </form>  
 <?php   }else{
           
+          //exec('wget http://createCleaninventoryListXml.php?brand=' . $_POST['catalog']);
+
         } 
 
-//exec('wget http://createCleaninventoryListXml.php);
+
 
         ?>
     </body>
