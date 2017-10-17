@@ -2,3 +2,6 @@
 /xml/*
 /csv/*
 /updates/*
+/unzipped/*
+/zip/*
+/unzip/*

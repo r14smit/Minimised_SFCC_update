@@ -33,3 +33,14 @@ function validNumbers($file){
     }
     return $ids;
 }
+
+function attributePosition($array,$match){
+    $count = 0;
+    foreach ($array as $v){
+        if($v->attributes()[0] == $match){
+            break;
+        }
+        $count++;
+    }
+    return $count;
+}
