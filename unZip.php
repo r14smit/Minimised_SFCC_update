@@ -6,8 +6,8 @@
  * and open the template in the editor.
  */
 
-$file = 'zip/monthly-catalogs-20170905080001.zip';
-$stock = 'zip/monthly_price-inventory-20170904000002.zip';
+$file = 'zip/monthly-catalogs-20171005080001.zip';
+$stock = 'zip/monthly_price-inventory-20171004000002.zip';
 
 $zip = zip_open($file);
 $stockZip = zip_open($stock);

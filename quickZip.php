@@ -8,8 +8,8 @@
 
 include 'functions.php';
 
-$file = 'zip/monthly-catalogs-20170905080001.zip';
-$stock = 'zip/monthly_price-inventory-20170904000002.zip';
+$file = 'zip/monthly-catalogs-20171005080001.zip';
+$stock = 'zip/monthly_price-inventory-20171004000002.zip';
 
 $zip = zip_open($file);
 $stockZip = zip_open($stock);
@@ -21,16 +21,16 @@ $priceOptions='';
 
 if (!$_POST){
     foreach ($brandList as $key => $value) {
-                $selections .= '<option value="'.$value[0].'">'.$key.'</option>';
+                $selections .= '<option value="'.$key.'">'.$key.'</option>';
            }   
 } else {  
 
      while($zip_entry=zip_read($zip)) {
            $zdir=dirname(zip_entry_name($zip_entry));
            $zname=zip_entry_name($zip_entry);
-           if(strpos($zdir,'catalogs/')>1 && strpos($zdir,'MASTER' )>1 && strpos($zdir,$_POST['catalog'] )>1){
+           if(strpos($zdir,'catalogs/')>1 && strpos($zdir,'MASTER' )>1 && strpos($zdir,$brandList[$_POST['catalog']][0].'-' )>1){
                 $options = $zname;
-           }elseif(strpos($zdir,'catalogs/')>1 && strpos($zdir,$_POST['catalog'] )>1){
+           }elseif(strpos($zdir,'catalogs/')>1 && strpos($zdir,$brandList[$_POST['catalog']][1].'-')>1){
                 $navigation = $zname;
            }
        } 
@@ -40,10 +40,10 @@ if (!$_POST){
         $zdir=dirname(zip_entry_name($zip_entry));
         $zname=zip_entry_name($zip_entry);
 
-        if(strpos($zdir,'pricebooks')>1 && strpos($zname, 'sale')<1 && strpos($zname,$_POST['catalog'].'-eur' )>1){
+        if(strpos($zdir,'pricebooks')>1 && strpos($zname, 'sale')<1 && strpos($zname,$brandList[$_POST['catalog']][0].'-eur' )>1){
              $priceOptions = $zname;
              echo $priceOptions ."-<br>" ;
-        }else if(strpos($zdir,'inventory-lists')>1 && strpos($zname,$_POST['catalog'].'-in' )>1){
+        }else if(strpos($zdir,'inventory-lists')>1 && strpos($zname,$brandList[$_POST['catalog']][0].'-in' )>1){
              $stockOptions = $zname;
              echo $stockOptions."-<br>" ;
         }
@@ -53,6 +53,7 @@ if (!$_POST){
 
     $zipCat = new ZipArchive;
     $res = $zipCat->open($file); 
+
 
     if ($res === TRUE) {
         //chmod("unzip\\", 0644); 
@@ -64,10 +65,15 @@ if (!$_POST){
     $zipIn = new ZipArchive;
     $res = $zipIn->open($stock);
     if ($res === TRUE) {
-        echo 'prices';
+        //echo 'prices';
         //chmod("unzip\\", 0644); 
-        $zipIn->extractTo('unzipped/',$stockOptions);
+        if ($zipIn->extractTo('unzipped/',$stockOptions)){
+            echo "zipped in \n";
+        }else{
+            'not zipped :-(';
+        }
         $zipIn->extractTo('unzipped/',$priceOptions);
+        
         $zipIn->close();
     }else {
     echo "Could not open file";

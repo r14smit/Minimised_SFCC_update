@@ -1,7 +1,7 @@
 <?php
 
 
-$xml=simplexml_load_file("xml/altTitled_catalog.xml");
+$xml=simplexml_load_file("1new_sb_catalog.xml");
 $elementsToRemove = array();
 $new = array(0=>'Neue',1=>'New',2=>'Nieuwe');
 

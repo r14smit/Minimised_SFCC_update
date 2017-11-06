@@ -15,7 +15,7 @@ foreach ($brandList as $key => $value) {
  
     echo moveCatalog($file,'unzipped/',$value[0],'MASTER');
     $catalog = $value[1].'-NAVIGATION';
-    echo moveCatalog($file,'unzipped/',$value[0],$catalog);
+    echo moveCatalog($file,'unzipped/',$value[1],$catalog);
 
     echo moveCatalog($stock,'unzipped/',$value[0],'inventory-lists');
     $pricebook = $value[0].'-eur-list';

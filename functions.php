@@ -34,13 +34,33 @@ function validNumbers($file){
     return $ids;
 }
 
-function attributePosition($array,$match){
-    $count = 0;
-    foreach ($array as $v){
-        if($v->attributes()[0] == $match){
-            break;
-        }
-        $count++;
+function moveCatalog($file,$move,$brand,$catalog){
+    $zip = zip_open($file);
+    $returnvalues ='';
+    while($zip_entry=zip_read($zip)) {
+           $zdir=dirname(zip_entry_name($zip_entry));
+           $zname=zip_entry_name($zip_entry);
+           echo $zdir."<br>";
+           if($catalog == 'MASTER' || strpos($catalog,'NAVIGATION')>1){      
+                if(strpos($zdir,$catalog )>1 && strpos($zdir,$brand ) > 1){
+                        $returnvalues = $zname;
+                }
+           }else{
+                if(strpos($zdir,$catalog )>1 && strpos($zname,$brand ) > 1){
+                        $returnvalues = $zname;
+                }
+           } 
     }
-    return $count;
+    zip_close($zip);       
+ 
+    $zipCat = new ZipArchive;
+    $res = $zipCat->open($file); 
+
+    if ($res === TRUE) {
+        //chmod("unzip\\", 0644); 
+        $zipCat->extractTo($move, $returnvalues);
+        $zipCat->close();
+    }
+    return 'moved : '. $brand . ' | ' . $catalog."\n<br>";
 }
+
