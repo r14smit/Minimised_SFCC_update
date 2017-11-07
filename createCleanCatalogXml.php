@@ -17,31 +17,41 @@ $xmlOut = 'updates/Update_catalogs/catalogs/'. $brandList[$brand][0] .'-MASTER-C
 
 $idsToKeep = validNumbers('csv/' . $brandList[$brand][0] . '-inStock.csv');
 
+//print_r($idsToKeep);
+$count= 0;
+
 foreach($xml->product as $key => $item){
     if (isset($item->variations)){
         if ($item->{'available-flag'} == 'false' || $item->{'searchable-flag'} == 'false' ){
             $mastersToRemove .= $item[0]->attributes()['product-id']."\n";
             $elementsToRemove[] = $item;
             foreach($item->variations->variants->variant as $variant){
-                $idsToRemove["$variant[0]->attributes()['product-id']"] = 1;
+                $insert = $variant[0]->attributes()['product-id'];
+                $idsToRemove["$insert"] = 1;
             }
         }
     }else{ 
         $match = $item[0]->attributes()['product-id'];
-        if ($idsToKeep["$match"] != 1){
+        echo "<br>\n".$match."< first ";
+        if (isset($idsToKeep["$match"]) &&  $idsToKeep["$match"] < 1){
             $elementsToRemove[] = $item;
-        }else if ($idsToRemove["$match"]){
+            echo "not to keep";
+        }else if (isset($idsToRemove["$match"])){
             $elementsToRemove[] = $item; 
+             echo "remove";
         }
     }
 }
 
 foreach($xml->{'category-assignment'} as $key => $item){
     $match = $item[0]->attributes()['product-id'];
-    if ($idsToKeep["$match"] != 1){
+    echo "<br>\n" . $match.":second";
+    if (isset($idsToKeep["$match"]) && $idsToKeep["$match"] < 1){
         $elementsToRemove[] = $item;
-    }else if ($idsToRemove["$match"]){
+        echo "not to keep";
+    }else if (isset($idsToRemove["$match"])){
         $elementsToRemove[] = $item; 
+        echo "remove";
     }
 } 
 

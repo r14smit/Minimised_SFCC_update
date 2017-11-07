@@ -15,8 +15,9 @@ $brandList = array('O32'=>array('B32','B32-OPEN32','B32-OPEN32'),
                     'TND'=>array('TNDSAP','TNDSAP','TNDSAP'),
                     'ONTOUR'=>array('ONTOURSAP','ONTOURSAP','ONTOURSAP'),
                     'MAW'=>array('MAWSAP','MAWSAP','MAWSAP'),
-                    'MEES'=>array('MEESSAP','MEES','MEESSAP'),
-                    'SB'=>array('SB','SB','SB')
+                    'SB'=>array('SB','SB','SB'),
+                    'MEES'=>array('MEESSAP','MEES','MEESSAP')
+                    
                 );
 
 function saveFile($name,$file){
@@ -26,10 +27,10 @@ fclose($fp);
 }
 
 function validNumbers($file){
-    $ids = array();
+    $ids = Array();
     foreach(file($file) as $line) {
         $id = substr($line,0, strlen($line)-1);
-        $ids[$id]=1;
+        $ids[trim($id)]=1;
     }
     return $ids;
 }
